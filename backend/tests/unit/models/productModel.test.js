@@ -5,10 +5,7 @@ const { productModel } = require('../../../src/models');
 
 const { expect } = chai;
 
-const { 
-  listAllProductsMock, 
-  oneProductMock, 
-  insertionDbResponseMock } = require('../mocks/productsMock');
+const { listAllProductsMock, oneProductMock } = require('../mocks/productsMock');
 
 describe('Testes da camada model de Products', function () {
   beforeEach(function () {
