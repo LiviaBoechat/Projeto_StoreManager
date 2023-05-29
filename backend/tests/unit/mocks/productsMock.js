@@ -18,4 +18,11 @@ const listAllProductsMock = [
       name: 'Martelo de Thor',
     };
 
-  module.exports = { listAllProductsMock, oneProductMock };
+  const insertionDbResponseMock = {
+      id: 4,
+      name: 'Trena',
+  };
+  
+  module.exports = { listAllProductsMock, 
+    oneProductMock, 
+    insertionDbResponseMock };

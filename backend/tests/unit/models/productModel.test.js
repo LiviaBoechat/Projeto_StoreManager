@@ -5,7 +5,10 @@ const { productModel } = require('../../../src/models');
 
 const { expect } = chai;
 
-const { listAllProductsMock, oneProductMock } = require('../mocks/productsMock');
+const { 
+  listAllProductsMock, 
+  oneProductMock, 
+  insertionDbResponseMock } = require('../mocks/productsMock');
 
 describe('Testes da camada model de Products', function () {
   beforeEach(function () {
@@ -38,5 +41,16 @@ describe('Testes da camada model de Products', function () {
     const response = await productModel.findById(id);
     // Assert
     expect(response).to.have.been.equal(undefined);
-});
+  });
+
+  it('Testa se a rota p/ inserir produtos funciona', async function () {
+     // Arrange (mock)
+    const productNameMock = 'Trena';
+    const insertId = 4;
+    sinon.stub(connection, 'execute').resolves([{ insertId }]); // mocka EXATEMENTE a função connection.execute e SEU retorno
+     // Act
+    const response = await productModel.insert(productNameMock);
+    // Assert
+    expect(response).to.be.deep.equal({ id: insertId, name: productNameMock });
+  });
 });

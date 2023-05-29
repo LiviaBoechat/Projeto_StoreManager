@@ -14,4 +14,12 @@ const findById = async (req, res) => {
     res.status(200).json(message); // service retorna os dados no message
 };
 
-module.exports = { findAll, findById };
+const insert = async (req, res) => {
+    const { name } = req.body;
+    console.log(name);
+    const { message } = await productService.insert(name);
+
+    return res.status(201).json(message); // service retorna os dados no message
+};
+
+module.exports = { findAll, findById, insert };

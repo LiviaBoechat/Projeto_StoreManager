@@ -5,7 +5,9 @@ const productModel = require('../../../src/models/productModel');
 
 const { expect } = chai;
 
-const { listAllProductsMock, oneProductMock } = require('../mocks/productsMock');
+const { listAllProductsMock, 
+    oneProductMock, 
+    insertionDbResponseMock } = require('../mocks/productsMock');
 
 describe('Testes da camada service de Products', function () {
     beforeEach(function () {
@@ -35,5 +37,14 @@ describe('Testes da camada service de Products', function () {
         const response = await productService.findById(id);
         // Assert
         expect(response).to.be.deep.equal({ type: 404, message: 'Product not found' });
+    });
+    it('Testa se a rota post /products responde corretamente', async function () {
+        // Arrange (mock)
+        const productNameMock = 'Trena';
+        sinon.stub(productModel, 'insert').resolves(insertionDbResponseMock);
+        // Act
+        const response = await productService.insert(productNameMock);
+         // Assert
+        expect(response).to.be.deep.equal({ type: null, message: insertionDbResponseMock });
     });
 });
