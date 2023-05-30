@@ -5,7 +5,10 @@ const salesModel = require('../../../src/models/salesModel');
 
 const { expect } = chai;
 
-const { listAllSalesMock, oneSaleMock } = require('../mocks/salesMock');
+const { listAllSalesMock, 
+    oneSaleMock, 
+    postSaleReturnMock, 
+    salesMock } = require('../mocks/salesMock');
 
 describe('Testes da camada service de sales', function () {
     beforeEach(function () {
@@ -35,5 +38,16 @@ describe('Testes da camada service de sales', function () {
         const response = await salesService.findById(id);
         // Assert
         expect(response).to.be.deep.equal({ type: 404, message: 'Sale not found' });
+    });
+    it('Testa se rota sales /post funciona', async function () {
+        // Arrange (mock)
+        const saleIdMock = 10;
+        sinon.stub(salesModel, 'insertSale').resolves(saleIdMock);
+        sinon.stub(salesModel, 'addSalesAndProducts').resolves(salesMock);
+        // Act
+        const response = await salesService.insert(salesMock);
+        // Assert
+        expect(response).to.be.deep
+        .equal({ type: null, message: { id: saleIdMock, itemsSold: postSaleReturnMock } });
     });
 });

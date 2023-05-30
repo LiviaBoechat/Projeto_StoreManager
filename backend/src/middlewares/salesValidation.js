@@ -1,8 +1,9 @@
-// const { salesSchema } = require('./schemas');
+// const { salesSchema } = require('../services/valiadations/schemas');
 
+// Middleware para validar o conteúdo dos ojetos de novas sales inseridas (colocar em routes /post)
 // const salesInsertValidation = async (req, res, next) => {
 //       const { body } = req;
-//       // console.log(body);
+//       console.log(body);
 //       body.forEach((eachValidation) => {
 //          const { error } = salesSchema.validate(eachValidation);
 

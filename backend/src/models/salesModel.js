@@ -36,13 +36,20 @@ const findById = async (id) => {
     return result;
 };
 
-const insert = async (name) => {
-  const [{ insertId }] = await connection.execute( 
-    'INSERT INTO StoreManager.sales (date) VALUES (?)',
-    [name],
-  );
-  const result = { id: insertId, name };
-  return result;
+ // 1. gerar o id automático da nova sale ao inseri-la na tabela sales
+const insertSale = async () => {
+    const query = 'INSERT INTO StoreManager.sales () VALUES ()';
+    const [objeto] = await connection.execute(query);
+    return objeto.insertId;
 };
 
-module.exports = { findAll, findById, insert };
+  // 2. inserir produtos na tabela sales_product
+  const addSalesAndProducts = async (saleId, productId, quantity) => {
+    const query = `INSERT INTO StoreManager.sales_products 
+    (sale_id, product_id, quantity) VALUES (?, ?, ?)`;
+    const [result] = await connection.execute(query, [saleId, productId, quantity]);
+    console.log('AQUI', result);
+    return result;       
+  };
+
+module.exports = { findAll, findById, insertSale, addSalesAndProducts };

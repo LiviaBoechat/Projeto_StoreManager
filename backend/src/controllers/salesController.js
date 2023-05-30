@@ -15,8 +15,8 @@ const findById = async (req, res) => {
 };
 
 const insert = async (req, res) => {
-    const { productId, quantity } = req.body;
-    const { type, message } = await salesService.insert(productId, quantity);
+    const salesArray = req.body;
+    const { type, message } = await salesService.insert(salesArray); // lembrar que aqui o body é um ARRAY c/ várias objetos de sales
 
     if (type) return res.status(404).json({ message: 'Registration failed' });
 
