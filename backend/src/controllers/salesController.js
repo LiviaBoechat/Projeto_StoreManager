@@ -14,4 +14,13 @@ const findById = async (req, res) => {
     res.status(200).json(message); // service retorna os dados no message
 };
 
-module.exports = { findAll, findById };
+const insert = async (req, res) => {
+    const { productId, quantity } = req.body;
+    const { type, message } = await salesService.insert(productId, quantity);
+
+    if (type) return res.status(404).json({ message: 'Registration failed' });
+
+    return res.status(201).json(message); // service retorna os dados no message
+};
+
+module.exports = { findAll, findById, insert };
