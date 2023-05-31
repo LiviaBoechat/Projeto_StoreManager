@@ -15,6 +15,13 @@ const findById = async (id) => {
     return product;
 };
 
+const findMaxId = async () => {
+  const [[product]] = await 
+    connection.execute('SELECT max(id) AS id FROM StoreManager.products');
+  
+  return product.id;
+};
+
 const insert = async (name) => {
   const [{ insertId }] = await connection.execute( 
     'INSERT INTO StoreManager.products (name) VALUES (?)',
@@ -24,4 +31,4 @@ const insert = async (name) => {
   return result;
 };
 
-module.exports = { findAll, findById, insert };
+module.exports = { findAll, findById, findMaxId, insert };

@@ -9,6 +9,7 @@ const { listAllSalesMock,
     oneSaleMock, 
     postSaleReturnMock, 
     salesMock } = require('../mocks/salesMock');
+const { productModel } = require('../../../src/models');
 
 describe('Testes da camada service de sales', function () {
     beforeEach(function () {
@@ -43,11 +44,12 @@ describe('Testes da camada service de sales', function () {
         // Arrange (mock)
         const saleIdMock = 10;
         sinon.stub(salesModel, 'insertSale').resolves(saleIdMock);
-        sinon.stub(salesModel, 'addSalesAndProducts').resolves(salesMock);
+        sinon.stub(salesModel, 'addSalesAndProducts').resolves(postSaleReturnMock);
+        sinon.stub(productModel, 'findMaxId').resolves([[{ id: 3 }]]);
         // Act
         const response = await salesService.insert(salesMock);
         // Assert
         expect(response).to.be.deep
-        .equal({ type: null, message: { id: saleIdMock, itemsSold: postSaleReturnMock } });
+        .equal({ type: null, message: { id: saleIdMock, itemsSold: salesMock } });
     });
 });

@@ -31,7 +31,9 @@ const oneSaleMock = {
         },
     ];
 
-    const postSaleReturnMock = [
+    const postSaleReturnMock = { 
+        id: 10, 
+        itemsSold: [
           {
             productId: 1,
             quantity: 10,
@@ -40,7 +42,8 @@ const oneSaleMock = {
             productId: 2,
             quantity: 60,
           },
-        ];
+        ],
+    };
 
 module.exports = {
     listAllSalesMock,

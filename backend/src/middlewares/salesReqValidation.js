@@ -1,43 +1,44 @@
-const { salesSchema } = require('../services/valiadations/schemas');
+const { salesSchema } = require('./schemas');
 
-const validateProductId = (req, res) => {
+const validateProductId = (req, res, next) => {
   const map = req.body.map((eachProduct) => eachProduct.productId);
-  if (map.includes(undefined)) return res.status(400).json({ message: 'productId is required' });
+  if (map.includes(undefined)) return res.status(400).json({ message: '"productId" is required' });
+  next();
 };
 
-const validateQuantity = (req, res) => {
-    const map = req.body.map((eachProduct) => eachProduct.productId);
-    if (map.includes(undefined)) return res.status(400).json({ message: 'quantity is required' });
+const validateQuantity = (req, res, next) => {
+    const map = req.body.map((eachProduct) => eachProduct.quantity);
+    if (map.includes(undefined)) return res.status(400).json({ message: '"quantity" is required' });
+    next();
   };
 
   const salesInsertValidation = async (req, res, next) => {
-    try {
-      const fails = req.body.map((eachProduct) => eachProduct
-      .map((eachValidation) => salesSchema.validate(eachValidation)));
-      
-      const greaterThanFail = fails.find((eachFail) => eachFail.message
-      .includes('be greater than'));
+      const fails = req.body.map((eachProduct) => {
+        const test = salesSchema.validate(eachProduct).error;
+        if (!test) return undefined;
+        return test.details[0].message;
+      });
+      console.log(fails);
+      const greaterThanFail = fails.includes('"quantity" must be a positive number');
+      console.log(greaterThanFail);
       if (greaterThanFail) {
-        return res.status(422).json({ message: 'quantity must be greater than or equal to 1' });
+        return res.status(422).json({ message: '"quantity" must be greater than or equal to 1' });
       }
       
-      const isRequiredFail = fails.find((eachFail) => eachFail.message.includes('is required'));
+      const isRequiredFail = fails.includes('is required');
       if (isRequiredFail) {
         return res.status(404).json({ message: 'is required' });
       }
-      
       next();
-    } catch (error) {
-      return res.status(422).json({ message: error.message });
-    }
   };
 
-const salesReqValidation = async (req, res, next) => {
-    validateProductId(req, res);
-    validateQuantity(req, res);
-    salesInsertValidation(req, res);
+//
+// const salesReqValidation = (req, res, next) => {
+//     validateProductId(req, res, next);
+//     validateQuantity(req, res, next);
+//     salesInsertValidation(req, res, next);
     
-    next();
-};
+//     next();
+// };
 
-module.exports = { salesReqValidation };
+module.exports = { validateProductId, validateQuantity, salesInsertValidation };
