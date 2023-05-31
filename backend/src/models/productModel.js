@@ -34,17 +34,18 @@ const insert = async (name) => {
 const update = async (id, name) => {
   const [[product]] = await 
     connection.execute('SELECT * FROM StoreManager.products WHERE id = ?', [id]);
- console.log(product);
+//  console.log(product);
     if (product) {
       await connection
       .execute('UPDATE StoreManager.products SET name = ? WHERE id = ?', [name, id]);
+      // esse return é do if, ñ retorno o db, é o retorno p/ o service
       return { 
         id: Number(id), 
         name,
       };
     }
-  
-  return { message: 'Product not found' };
+
+  return 'Product not found';
 };
 
 module.exports = { findAll, findById, findMaxId, insert, update };
