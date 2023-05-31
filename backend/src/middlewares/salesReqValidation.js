@@ -32,13 +32,4 @@ const validateQuantity = (req, res, next) => {
       next();
   };
 
-//
-// const salesReqValidation = (req, res, next) => {
-//     validateProductId(req, res, next);
-//     validateQuantity(req, res, next);
-//     salesInsertValidation(req, res, next);
-    
-//     next();
-// };
-
 module.exports = { validateProductId, validateQuantity, salesInsertValidation };

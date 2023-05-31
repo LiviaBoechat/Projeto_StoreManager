@@ -38,5 +38,5 @@ describe('Testes da camada model de Sales', function () {
     const response = await salesModel.findById(id);
     // Assert
     expect(response).to.have.been.equal(undefined);
-});
+  });
 });

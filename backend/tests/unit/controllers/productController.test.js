@@ -4,7 +4,8 @@ const sinon = require('sinon');
 const productService = require('../../../src/services/productService');
 const productController = require('../../../src/controllers/productController');
 
-const { insertionDbResponseMock } = require('../mocks/productsMock');
+const { listAllProductsMock, 
+    oneProductMock, insertionDbResponseMock } = require('../mocks/productsMock');
 
 chai.use(sinonChai);
 
@@ -14,6 +15,33 @@ describe('testando a camada controller da rota /products', function () {
     beforeEach(function () {
         sinon.restore();
       });
+      it('Testa se rota /products  funciona', async function () {
+        // Arrange (mock)
+        const req = {};
+        const res = {};
+        res.status = sinon.stub().returns(res);
+        res.json = sinon.stub().returns();
+        sinon.stub(productService, 'findAll').resolves({ type: 200, message: listAllProductsMock });
+        // Act
+        await productController.findAll(req, res);
+        // Assert
+        expect(res.status).to.have.been.calledWith(200);
+        expect(res.json).to.have.been.calledWith(listAllProductsMock);
+    });
+
+    it('testando a resposta da rota /products/:id', async function () {
+        // Arrange (mock)
+        const req = { params: { id: 1 } };
+        const res = {};
+        res.status = sinon.stub().returns(res);
+        res.json = sinon.stub().returns();
+        sinon.stub(productService, 'findById').resolves({ type: null, message: oneProductMock });
+        // Act
+        await productController.findById(req, res);
+        // Assert
+        expect(res.status).to.have.been.calledWith(200);
+        expect(res.json).to.have.been.calledWith(oneProductMock);
+    });
     it('Testa se a rota post /products funciona', async function () {
         // Arrange (mock)
         const req = { body: { name: 'Trena' } };
@@ -28,40 +56,4 @@ describe('testando a camada controller da rota /products', function () {
         expect(res.status).to.have.been.calledWith(201);
         expect(res.json).to.have.been.calledWith(insertionDbResponseMock);
     });
-//     it(
-// 'Testa se a rota post /products retorna erro se inserir produto s/ name',
-//      async function () {
-//         // Arrange (mock)
-//         const req = { body: { name: '' } };
-//         const res = {};
-//         res.status = sinon.stub().returns(res);
-//         res.json = sinon.stub().returns();
-//         sinon.stub(productService, 'insert').resolves({ 
-//           message: 'name is not allowed to be empty', 
-//         });
-//         // Act
-//         await productController.insert(req, res);
-//         // Assert
-//         expect(res.json).to.have.been.calledWith({ message: '"name" is not allowed to be empty' });
-//     },
-// );
-//     it(
-//       'Testa se a rota post /products retorna erro se name < 5 caracteres',
-//        async function () {
-//         // Arrange (mock)
-//         const req = { body: { name: 'aaa' } };
-//         const res = {};
-//         res.status = sinon.stub().returns(res);
-//         res.json = sinon.stub().returns();
-//         sinon.stub(productService, 'insert').resolves({ 
-//           message: '"name" length must be at least 5 characters long', 
-//         });
-//         // Act
-//         await productController.insert(req, res);
-//         // Assert
-//         expect(res.json).to.have.been.calledWith({ 
-//           message: '"name" length must be at least 5 characters long', 
-//         });
-//     },
-// );
 });
