@@ -15,8 +15,10 @@ const findById = async (id) => {
 };
 
 const insert = async (bodyArray) => {
+    // campo productId inexistente no db, em uma requisição com um único item
+    // campo productId inexistente no db, em uma requisição com vários items
     // const verifyProduct = await // forEach + includes p/ cada obj do array sales
-    // if (verifyProduct.length === 0) return { type: 400, message: 'Product does not exist' };
+    // if (verifyProduct.length === 0) return { type: 404, message: 'Product not found' };
 
     const saleId = await salesModel.insertSale(); 
     const productPromise = bodyArray.map(({ productId, quantity }) => {

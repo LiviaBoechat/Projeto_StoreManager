@@ -11,7 +11,7 @@ const findById = async (req, res) => {
     console.log(type, message);
     if (type) return res.status(404).json({ message: 'Sale not found' }); // se type for true, ele ñ retornou null (caso de sucesso)
 
-    res.status(200).json(message); // service retorna os dados no message
+    return res.status(200).json(message); // service retorna os dados no message
 };
 
 const insert = async (req, res) => {

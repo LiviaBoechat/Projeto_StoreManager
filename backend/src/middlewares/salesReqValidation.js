@@ -1,30 +1,29 @@
 const { salesSchema } = require('../services/valiadations/schemas');
 
-const validateProductId = (bodyArray, res) => {
-  const map = bodyArray.map((eachProduct) => eachProduct.productId);
-  if (map.includes(undefined)) return res.status(404).json();
+const validateProductId = (req, res) => {
+  const map = req.body.map((eachProduct) => eachProduct.productId);
+  if (map.includes(undefined)) return res.status(400).json({ message: 'productId is required' });
 };
 
-const validateQuantity = (bodyArray, res) => {
-    const map = bodyArray.map((eachProduct) => eachProduct.productId);
-    if (map.includes(undefined)) return res.status(404).json();
+const validateQuantity = (req, res) => {
+    const map = req.body.map((eachProduct) => eachProduct.productId);
+    if (map.includes(undefined)) return res.status(400).json({ message: 'quantity is required' });
   };
 
   const salesInsertValidation = async (req, res, next) => {
     try {
-      const fails = req.body
-      .map((eachProduct) => eachProduct
+      const fails = req.body.map((eachProduct) => eachProduct
       .map((eachValidation) => salesSchema.validate(eachValidation)));
       
       const greaterThanFail = fails.find((eachFail) => eachFail.message
       .includes('be greater than'));
       if (greaterThanFail) {
-        throw new Error(greaterThanFail.message);
+        return res.status(422).json({ message: 'quantity must be greater than or equal to 1' });
       }
       
       const isRequiredFail = fails.find((eachFail) => eachFail.message.includes('is required'));
       if (isRequiredFail) {
-        throw new Error(isRequiredFail.message);
+        return res.status(404).json({ message: 'is required' });
       }
       
       next();
@@ -34,9 +33,9 @@ const validateQuantity = (bodyArray, res) => {
   };
 
 const salesReqValidation = async (req, res, next) => {
-    validateProductId(req.body, res);
-    validateQuantity(req.body, res);
-    salesInsertValidation(req.body, res);
+    validateProductId(req, res);
+    validateQuantity(req, res);
+    salesInsertValidation(req, res);
     
     next();
 };
