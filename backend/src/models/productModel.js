@@ -31,4 +31,20 @@ const insert = async (name) => {
   return result;
 };
 
-module.exports = { findAll, findById, findMaxId, insert };
+const update = async (id, name) => {
+  const [[product]] = await 
+    connection.execute('SELECT * FROM StoreManager.products WHERE id = ?', [id]);
+ console.log(product);
+    if (product) {
+      await connection
+      .execute('UPDATE StoreManager.products SET name = ? WHERE id = ?', [name, id]);
+      return { 
+        id: Number(id), 
+        name,
+      };
+    }
+  
+  return { message: 'Product not found' };
+};
+
+module.exports = { findAll, findById, findMaxId, insert, update };

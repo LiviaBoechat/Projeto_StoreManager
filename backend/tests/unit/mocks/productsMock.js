@@ -23,6 +23,12 @@ const listAllProductsMock = [
       name: 'Trena',
   };
   
+  const updateReturnMock = {
+    id: 1,
+    name: 'Capacete',
+  };
+
   module.exports = { listAllProductsMock, 
     oneProductMock, 
-    insertionDbResponseMock };
+    insertionDbResponseMock,
+    updateReturnMock };

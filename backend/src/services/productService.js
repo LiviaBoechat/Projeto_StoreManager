@@ -20,4 +20,12 @@ const insert = async (name) => {
     return { type: null, message: result };
 };
 
-module.exports = { findAll, findById, insert };
+const update = async (id, name) => {
+    const result = await productModel.update(id, name); // dependencia externa
+    // console.log(result);
+    if (!result) return { type: 404, message: 'Product not found' };
+
+    return { type: null, message: result };
+};
+
+module.exports = { findAll, findById, insert, update };

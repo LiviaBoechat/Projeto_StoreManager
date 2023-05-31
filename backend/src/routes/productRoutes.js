@@ -5,8 +5,9 @@ const { idValidation,
 
 const productRouter = express.Router();
 
-productRouter.get('/', productController.findAll);  
 productRouter.get('/:id', idValidation, productController.findById);  
+productRouter.put('/:id', idValidation, productNameValidation, productController.update); 
+productRouter.get('/', productController.findAll);   
 productRouter.post('/', productNameValidation, productController.insert);  
 
 module.exports = productRouter;

@@ -18,5 +18,5 @@ function productNameValidation(req, res, next) {
     }
     next();
   }
-  // 
+
 module.exports = { productNameValidation, idValidation };

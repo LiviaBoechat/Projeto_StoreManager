@@ -21,4 +21,14 @@ const insert = async (req, res) => {
     return res.status(201).json(message); // service retorna os dados no message
 };
 
-module.exports = { findAll, findById, insert };
+const update = async (req, res) => {
+    const { id } = req.params;
+    const { name } = req.body;
+    const { type, message } = await productService.update(id, name);
+    // console.log(type, message);
+    if (type) return res.status(404).json({ message: 'Product not found' }); // se type for true, ele ñ retornou null (caso de sucesso)
+
+    res.status(200).json(message); // service retorna os dados no message
+};
+
+module.exports = { findAll, findById, insert, update };

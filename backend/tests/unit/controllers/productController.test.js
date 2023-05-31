@@ -5,7 +5,9 @@ const productService = require('../../../src/services/productService');
 const productController = require('../../../src/controllers/productController');
 
 const { listAllProductsMock, 
-    oneProductMock, insertionDbResponseMock } = require('../mocks/productsMock');
+    oneProductMock, 
+    insertionDbResponseMock, 
+    updateReturnMock } = require('../mocks/productsMock');
 
 chai.use(sinonChai);
 
@@ -55,5 +57,19 @@ describe('testando a camada controller da rota /products', function () {
         // Assert
         expect(res.status).to.have.been.calledWith(201);
         expect(res.json).to.have.been.calledWith(insertionDbResponseMock);
+    });
+
+    it('Testa se o update é realizado na rota put /products/:id ', async function () {
+        // Arrange (mock)
+        const req = { body: { name: 'Capacete' }, params: { id: 1 } };
+        const res = {};
+        res.status = sinon.stub().returns(res);
+        res.json = sinon.stub().returns();
+        sinon.stub(productService, 'update').resolves({ type: null, message: updateReturnMock });
+         // Act
+        await productController.update(req, res);
+        // Assert
+        expect(res.status).to.have.been.calledWith(200);
+        expect(res.json).to.have.been.calledWith(updateReturnMock);
     });
 });

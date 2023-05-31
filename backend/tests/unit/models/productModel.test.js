@@ -5,7 +5,7 @@ const { productModel } = require('../../../src/models');
 
 const { expect } = chai;
 
-const { listAllProductsMock, oneProductMock } = require('../mocks/productsMock');
+const { listAllProductsMock, oneProductMock, updateReturnMock } = require('../mocks/productsMock');
 
 describe('Testes da camada model de Products', function () {
   beforeEach(function () {
@@ -50,4 +50,20 @@ describe('Testes da camada model de Products', function () {
     // Assert
     expect(response).to.be.deep.equal({ id: insertId, name: productNameMock });
   });
+
+  it('Testa se o update é realizado na rota put /products/:id ', async function () {
+    // Arrange (mock)
+    const idMock = '1';
+    const nameMock = 'Capacete';
+    sinon.stub(connection, 'execute')
+    .onFirstCall()
+    .resolves([[{ id: 1, name: 'Martelo de Thor' }]])
+    .onSecondCall()
+    .resolves();
+ 
+    // Act
+    const response = await productModel.update(idMock, nameMock);
+    // Assert
+    expect(response).to.be.deep.equal(updateReturnMock);
+});
 });
