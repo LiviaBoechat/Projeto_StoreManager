@@ -21,6 +21,9 @@ const insert = async (name) => {
 };
 
 const update = async (id, name) => {
+    const findId = await productModel.findById(id);
+    if (!findId) return { type: 404, message: 'error' };
+
     const result = await productModel.update(id, name); // dependencia externa
     // console.log(result);
     if (result === 'Product not found') return { type: 404, message: 'Product not found' };
@@ -28,4 +31,13 @@ const update = async (id, name) => {
     return { type: null, message: result };
 };
 
-module.exports = { findAll, findById, insert, update };
+const deleteProduct = async (id) => {
+    const findId = await productModel.findById(id);
+    if (!findId) return { type: 404, message: 'Product not found' };
+
+    const result = await productModel.deleteProduct(id);
+
+    return { type: null, message: result };
+};
+
+module.exports = { findAll, findById, insert, update, deleteProduct };

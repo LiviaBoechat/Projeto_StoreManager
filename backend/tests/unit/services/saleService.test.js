@@ -3,6 +3,8 @@ const sinon = require('sinon');
 const salesService = require('../../../src/services/salesService');
 const salesModel = require('../../../src/models/salesModel');
 
+const saleProductsValidation = require('../../../src/services/valiadations/saleProductsValidation');
+
 const { expect } = chai;
 
 const { listAllSalesMock, 
@@ -43,6 +45,7 @@ describe('Testes da camada service de sales', function () {
     it('Testa se rota sales /post funciona', async function () {
         // Arrange (mock)
         const saleIdMock = 10;
+        sinon.stub(saleProductsValidation, 'saleProductsValidation').resolves(saleIdMock);
         sinon.stub(salesModel, 'insertSale').resolves(saleIdMock);
         sinon.stub(salesModel, 'addSalesAndProducts').resolves(postSaleReturnMock);
         sinon.stub(productModel, 'findMaxId').resolves([[{ id: 3 }]]);

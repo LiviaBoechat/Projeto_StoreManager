@@ -21,4 +21,29 @@ const missingIdMock = [
     },
   ];
 
-module.exports = { reqValidMock, missingIdMock, missingQuantityMock };
+  const invalidIdMock = [
+    {
+      productId: 'invalid',
+      quantity: 1,
+    },
+  ];
+
+  const negativeIdMock = [
+    {
+      productId: -1,
+      quantity: 1,
+    },
+  ];
+  const notIntergerIdMock = [
+    {
+      productId: 0.5,
+      quantity: 1,
+    },
+  ];
+
+module.exports = { reqValidMock, 
+  missingIdMock, 
+  missingQuantityMock, 
+  invalidIdMock, 
+  negativeIdMock, 
+  notIntergerIdMock };

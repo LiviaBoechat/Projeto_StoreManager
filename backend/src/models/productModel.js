@@ -44,8 +44,11 @@ const update = async (id, name) => {
         name,
       };
     }
+  };
 
-  return 'Product not found';
+const deleteProduct = async (id) => {
+  await connection.execute('DELETE FROM StoreManager.products WHERE id = ?', [id]);
+  return true;
 };
 
-module.exports = { findAll, findById, findMaxId, insert, update };
+module.exports = { findAll, findById, findMaxId, insert, update, deleteProduct };

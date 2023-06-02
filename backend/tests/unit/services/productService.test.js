@@ -52,10 +52,52 @@ describe('Testes da camada service de Products', function () {
         // Arrange (mock)
         const idMock = 1;
         const nameMock = 'Capacete';
+        sinon.stub(productModel, 'findById').resolves(idMock);
         sinon.stub(productModel, 'update').resolves(updateReturnMock);
         // Act
         const response = await productService.update(idMock, nameMock);
         // Assert
         expect(response).to.be.deep.equal({ type: null, message: updateReturnMock });
     });
+
+    it('Teste se a rota delete com /products/:id funciona', async function () {
+        // Arrange (mock)
+        const idMock = 10;
+        sinon.stub(productModel, 'findById').resolves(idMock);
+        sinon.stub(productModel, 'deleteProduct').resolves(true); // sempre retornará true nesse caso específico
+        // Act
+        const response = await productService.deleteProduct({ type: null, message: true });
+        // Assert
+        expect(response).to.be.deep.equal({ type: null, message: true });
+    });
+    
+    // it('retorna erro quando um productId inexistente é fornecido', async function () {
+    //     // Arrange
+    //     const req = [
+    //       { productId: 1 },
+    //       { productId: 2 },
+    //       { productId: 3 },
+    //     ];
+    //     const maxId = 5;
+    //     sinon.stub(productModel, 'findMaxId').resolves(maxId);
+    //     // Act
+    //     const result = await salesProdValid.saleProductsValidation(req);
+    //     // Assert
+    //     expect(result).to.deep.equal({ type: 404, message: 'Product not found' });
+    //   });
+    
+    //   it('retorna "Product exists" quando todos os productIds existem', async function () {
+    //     // Arrange
+    //     const req = [
+    //       { productId: 1 },
+    //       { productId: 2 },
+    //       { productId: 3 },
+    //     ];
+    //     const maxId = 3;
+    //     sinon.stub(productModel, 'findMaxId').resolves(maxId);
+    //     // Act
+    //     const result = await salesProdValid.saleProductsValidation(req);
+    //     // Assert
+    //     expect(result).to.deep.equal({ type: null, message: 'Product exists' });
+    //   });
 });

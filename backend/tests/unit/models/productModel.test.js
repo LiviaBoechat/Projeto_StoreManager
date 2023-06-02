@@ -65,5 +65,15 @@ describe('Testes da camada model de Products', function () {
     const response = await productModel.update(idMock, nameMock);
     // Assert
     expect(response).to.be.deep.equal(updateReturnMock);
-});
+  });
+
+  it('Testa se a rota delete com /products/:id funciona', async function () {
+    // Arrange (mock)
+   const id = 1;
+   sinon.stub(connection, 'execute').resolves(); // mocka EXATEMENTE a função connection.execute e SEU retorno
+   // Act
+   const response = await productModel.deleteProduct(id);
+   // Assert
+   expect(response).to.be.deep.equal(true); // SEM [] pq o mock já é um objeto, ñ precisa desestruturar
+  });
 });

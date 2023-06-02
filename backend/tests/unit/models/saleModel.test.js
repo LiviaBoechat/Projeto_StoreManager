@@ -39,4 +39,31 @@ describe('Testes da camada model de Sales', function () {
     // Assert
     expect(response).to.have.been.equal(undefined);
   });
+
+  it('Teste se a função insertSale insere uma nova venda', async function () {
+    // Arrange (mock)
+    sinon.stub(connection, 'execute').resolves([{ insertId: 1 }]);
+    // Act
+    const saleId = await salesModel.insertSale();
+    // Assert
+    expect(saleId).to.be.a('number').and.to.equal(1);
+    expect(connection.execute.calledOnce).to.equal(true);
+    expect(connection.execute.getCall(0).args[0]).to.be.a('string').and.to.contain('INSERT INTO');
+  });
+
+  it('Teste se a função addSalesAndProducts insere os produtos corretamente', async function () {
+    // Arrange (mock)
+    const saleId = 1;
+    const productId = 1;
+    const quantity = 1;
+    sinon.stub(connection, 'execute').resolves([oneSaleMock]); 
+    // Act
+    const result = await salesModel.addSalesAndProducts(saleId, productId, quantity);
+    // Assert
+    expect(result).to.deep.equal(oneSaleMock);
+    expect(connection.execute.calledOnce).to.equal(true);
+    expect(connection.execute.getCall(0).args[0]).to.be.a('string').and.to.contain('INSERT INTO');
+    expect(connection.execute.getCall(0).args[1])
+      .to.be.an('array').and.to.deep.equal([saleId, productId, quantity]);
+  });
 });

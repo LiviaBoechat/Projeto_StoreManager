@@ -31,7 +31,7 @@ describe('testando a camada controller da rota /products', function () {
         expect(res.json).to.have.been.calledWith(listAllProductsMock);
     });
 
-    it('testando a resposta da rota /products/:id', async function () {
+    it('Testa se rota /products/:id funciona ', async function () {
         // Arrange (mock)
         const req = { params: { id: 1 } };
         const res = {};
@@ -44,6 +44,7 @@ describe('testando a camada controller da rota /products', function () {
         expect(res.status).to.have.been.calledWith(200);
         expect(res.json).to.have.been.calledWith(oneProductMock);
     });
+
     it('Testa se a rota post /products funciona', async function () {
         // Arrange (mock)
         const req = { body: { name: 'Trena' } };
@@ -71,5 +72,20 @@ describe('testando a camada controller da rota /products', function () {
         // Assert
         expect(res.status).to.have.been.calledWith(200);
         expect(res.json).to.have.been.calledWith(updateReturnMock);
+    });
+
+    it('Testa se rota delete /products/:id funciona ', async function () {
+        // Arrange (mock)
+        const req = { params: { id: 1 } };
+        const res = {};
+        res.status = sinon.stub().returns(res);
+        res.json = sinon.stub().returns();
+        sinon.stub(productService, 'deleteProduct')
+          .resolves({ type: null, message: true });
+        // Act
+        await productController.deleteProduct(req, res);
+        // Assert
+        expect(res.status).to.have.been.calledWith(204);
+        expect(res.json).to.have.been.calledWith('');
     });
 });
