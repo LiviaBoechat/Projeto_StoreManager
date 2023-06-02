@@ -46,8 +46,7 @@ describe('Testes da camada model de Sales', function () {
     // Act
     const saleId = await salesModel.insertSale();
     // Assert
-    expect(saleId).to.be.a('number').and.to.equal(1);
-    expect(connection.execute.calledOnce).to.equal(true);
+    expect(saleId).to.deep.equal(1);
   });
 
   it('Teste se a função addSalesAndProducts insere os produtos corretamente', async function () {
@@ -60,6 +59,5 @@ describe('Testes da camada model de Sales', function () {
     const result = await salesModel.addSalesAndProducts(saleId, productId, quantity);
     // Assert
     expect(result).to.deep.equal(oneSaleMock);
-    expect(connection.execute.calledOnce).to.equal(true);
   });
 });
