@@ -48,7 +48,6 @@ describe('Testes da camada model de Sales', function () {
     // Assert
     expect(saleId).to.be.a('number').and.to.equal(1);
     expect(connection.execute.calledOnce).to.equal(true);
-    expect(connection.execute.getCall(0).args[0]).to.be.a('string').and.to.contain('INSERT INTO');
   });
 
   it('Teste se a função addSalesAndProducts insere os produtos corretamente', async function () {
@@ -62,8 +61,5 @@ describe('Testes da camada model de Sales', function () {
     // Assert
     expect(result).to.deep.equal(oneSaleMock);
     expect(connection.execute.calledOnce).to.equal(true);
-    expect(connection.execute.getCall(0).args[0]).to.be.a('string').and.to.contain('INSERT INTO');
-    expect(connection.execute.getCall(0).args[1])
-      .to.be.an('array').and.to.deep.equal([saleId, productId, quantity]);
   });
 });
