@@ -32,7 +32,7 @@ const deleteSale = async (req, res) => {
   const update = async (req, res) => {
     const { saleId, productId } = req.params;
     const { quantity } = req.body;
-    // console.log('aquiiiiiiiiiiiiiiiii', quantity);
+    console.log('quantityNoModel', quantity);
     const { type, message } = await salesService.update(saleId, productId, quantity);
     if (type) return res.status(404).json({ message: 'Product not found in sale' });
   

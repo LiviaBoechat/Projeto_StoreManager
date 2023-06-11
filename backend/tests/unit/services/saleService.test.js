@@ -59,8 +59,8 @@ describe('Testes da camada service de sales', function () {
 
     it('Teste se a rota delete com /sales/:id funciona', async function () {
         // Arrange (mock)
-        const idMock = 10;
-        sinon.stub(validateSaleUpdate, 'validateSaleUpdate').resolves();
+        const idMock = 1;
+        sinon.stub(salesModel, 'findById').resolves(oneSaleMock);
         sinon.stub(salesModel, 'deleteSale').resolves(true); // sempre retornará true nesse caso específico, ver function
         // Act
         const response = await salesService.deleteSale(idMock);
@@ -70,10 +70,10 @@ describe('Testes da camada service de sales', function () {
 
     it('Teste se a rota put com /sales... funciona', async function () {
         // Arrange (mock)
-        const saleIdMock = 10;
+        const dateMock = '2023-05-06T03:14:28.000Z1';
         const productIdMock = 10;
         const quantityMock = 10;
-        const dateMock = '2023-05-06T03:14:28.000Z1';
+        const saleIdMock = 10;
         sinon.stub(validateSaleUpdate, 'validateSaleUpdate').resolves();
         sinon.stub(salesModel, 'update').resolves(true); 
         // Act
@@ -82,11 +82,24 @@ describe('Testes da camada service de sales', function () {
         expect(response).to.be.deep.equal({ type: null, 
             message: 
             {
-                dateMock,
-                productId: 10,
-                quantity: 10,
-                saleId: 10,
+                date: dateMock,
+                productId: productIdMock,
+                quantity: quantityMock,
+                saleId: saleIdMock,
               },
         });
+    });
+
+    it('Teste se a rota put com /sales... ñ encontra sale no db', async function () {
+        // Arrange (mock)
+        const productIdMock = 10;
+        const quantityMock = 10;
+        const saleIdMock = 10;
+        sinon.stub(validateSaleUpdate, 'validateSaleUpdate').resolves();
+        sinon.stub(salesModel, 'update').resolves([]); 
+        // Act
+        const response = await salesService.update(saleIdMock, productIdMock, quantityMock);
+        // Assert
+        expect(response).to.be.deep.equal({ type: 404, message: 'Sale not found' });
     });
 });
