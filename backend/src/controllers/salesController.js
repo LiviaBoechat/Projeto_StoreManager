@@ -21,4 +21,22 @@ const insert = async (req, res) => {
     return res.status(201).json(message); // service retorna os dados no message
 };
 
-module.exports = { findAll, findById, insert };
+const deleteSale = async (req, res) => {
+    const { id } = req.params;
+    const { type } = await salesService.deleteSale(id);
+    if (type) return res.status(404).json({ message: 'Sale not found' }); // se type for true, ele ñ retornou null (caso de sucesso)
+
+    return res.status(204).json('');
+  };
+
+  const update = async (req, res) => {
+    const { saleId, productId } = req.params;
+    const { quantity } = req.body;
+    // console.log('aquiiiiiiiiiiiiiiiii', quantity);
+    const { type, message } = await salesService.update(saleId, productId, quantity);
+    if (type) return res.status(404).json({ message: 'Product not found in sale' });
+  
+    res.status(200).json(message);
+  };
+
+module.exports = { findAll, findById, insert, deleteSale, update };

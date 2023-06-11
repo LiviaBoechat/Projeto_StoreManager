@@ -38,6 +38,40 @@ describe('Testes da camada service de Products', function () {
         // Assert
         expect(response).to.be.deep.equal({ type: 404, message: 'Product not found' });
     });
+
+    it('Testa se rota get /products/search funciona', async function () {
+        // Arrange (mock)
+        const queryMock = 'Martelo';
+        sinon.stub(productModel, 'findAll').resolves(listAllProductsMock);
+        sinon.stub(productModel, 'findByQuery').resolves(oneProductMock); 
+        // Act
+        const response = await productService.findByQuery(queryMock);
+        // Assert
+        expect(response).to.be.deep.equal({ type: null, message: oneProductMock });
+    });
+
+    it('Testa se rota get /products/search retorna tudo se query é undefined', async function () {
+        // Arrange (mock)
+        const queryMock = '';
+        sinon.stub(productModel, 'findAll').resolves(listAllProductsMock);
+        sinon.stub(productModel, 'findByQuery').resolves(listAllProductsMock); 
+        // Act
+        const response = await productService.findByQuery(queryMock);
+        // Assert
+        expect(response).to.be.deep.equal({ type: null, message: listAllProductsMock });
+    });
+
+    it('Testa se rota get /products/search retorna [] se query ñ existir no db', async function () {
+        // Arrange (mock)
+        const queryMock = 'Xablau';
+        sinon.stub(productModel, 'findAll').resolves(listAllProductsMock);
+        sinon.stub(productModel, 'findByQuery').resolves(); 
+        // Act
+        const response = await productService.findByQuery(queryMock);
+        // Assert
+        expect(response).to.be.deep.equal({ type: 200, message: [] });
+    });
+    
     it('Testa se a rota post /products responde corretamente', async function () {
         // Arrange (mock)
         const productNameMock = 'Trena';
@@ -70,34 +104,4 @@ describe('Testes da camada service de Products', function () {
         // Assert
         expect(response).to.be.deep.equal({ type: null, message: true });
     });
-    
-    // it('retorna erro quando um productId inexistente é fornecido', async function () {
-    //     // Arrange
-    //     const req = [
-    //       { productId: 1 },
-    //       { productId: 2 },
-    //       { productId: 3 },
-    //     ];
-    //     const maxId = 5;
-    //     sinon.stub(productModel, 'findMaxId').resolves(maxId);
-    //     // Act
-    //     const result = await salesProdValid.saleProductsValidation(req);
-    //     // Assert
-    //     expect(result).to.deep.equal({ type: 404, message: 'Product not found' });
-    //   });
-    
-    //   it('retorna "Product exists" quando todos os productIds existem', async function () {
-    //     // Arrange
-    //     const req = [
-    //       { productId: 1 },
-    //       { productId: 2 },
-    //       { productId: 3 },
-    //     ];
-    //     const maxId = 3;
-    //     sinon.stub(productModel, 'findMaxId').resolves(maxId);
-    //     // Act
-    //     const result = await salesProdValid.saleProductsValidation(req);
-    //     // Assert
-    //     expect(result).to.deep.equal({ type: null, message: 'Product exists' });
-    //   });
 });

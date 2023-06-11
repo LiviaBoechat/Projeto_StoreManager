@@ -45,6 +45,50 @@ describe('testando a camada controller da rota /products', function () {
         expect(res.json).to.have.been.calledWith(oneProductMock);
     });
 
+    it('Testa se rota get /products/search funciona ', async function () {
+        // Arrange (mock)
+        const req = { query: 'Martelo' };
+        const res = {};
+        res.status = sinon.stub().returns(res);
+        res.json = sinon.stub().returns();
+        sinon.stub(productService, 'findByQuery')
+          .resolves({ type: null, message: oneProductMock });
+        // Act
+        await productController.findByQuery(req, res);
+        // Assert
+        expect(res.status).to.have.been.calledWith(200);
+        expect(res.json).to.have.been.calledWith(oneProductMock);
+    });
+
+    it('Testa se rota get /products/search retorna tudo se query é undefined', async function () {
+        // Arrange (mock)
+        const req = { query: '' };
+        const res = {};
+        res.status = sinon.stub().returns(res);
+        res.json = sinon.stub().returns();
+        sinon.stub(productService, 'findByQuery')
+          .resolves({ type: null, message: listAllProductsMock });
+        // Act
+        await productController.findByQuery(req, res);
+        // Assert
+        expect(res.status).to.have.been.calledWith(200);
+        expect(res.json).to.have.been.calledWith(listAllProductsMock);
+    });
+
+    it('Testa se rota get /products/search retorna [] se query ñ existir no db', async function () {
+        // Arrange (mock)
+        const req = { query: '' };
+        const res = {};
+        res.status = sinon.stub().returns(res);
+        res.json = sinon.stub().returns();
+        sinon.stub(productService, 'findByQuery')
+          .resolves({ type: 200, message: [] });
+        // Act
+        await productController.findByQuery(req, res);
+        // Assert
+        expect(res.status).to.have.been.calledWith(200);
+        expect(res.json).to.have.been.calledWith([]);
+    });
     it('Testa se a rota post /products funciona', async function () {
         // Arrange (mock)
         const req = { body: { name: 'Trena' } };
@@ -73,7 +117,6 @@ describe('testando a camada controller da rota /products', function () {
         expect(res.status).to.have.been.calledWith(200);
         expect(res.json).to.have.been.calledWith(updateReturnMock);
     });
-
     it('Testa se rota delete /products/:id funciona ', async function () {
         // Arrange (mock)
         const req = { params: { id: 1 } };

@@ -1,5 +1,6 @@
 const { salesModel } = require('../models'); // barrel é um objeto -> desesturar com {}
 const { saleProductsValidation } = require('./valiadations/saleProductsValidation');
+const { validateSaleUpdate } = require('./valiadations/validateSaleUpdate');
 
 const findAll = async () => {
     const result = await salesModel.findAll(); // dependencia externa
@@ -29,5 +30,24 @@ const insert = async (bodyArray) => {
   
     return { type: null, message: { id: saleId, itemsSold: bodyArray } };
 };
-//
-module.exports = { findAll, findById, insert };
+
+const deleteSale = async (id) => {
+    const findId = await salesModel.findById(id);
+    if (!findId || findId.length === 0) return { type: 404, message: 'Sale not found' };
+
+    const result = await salesModel.deleteSale(id);
+
+    return { type: null, message: result };
+};
+
+const update = async (saleId, productId, quantity) => {
+    const { message } = validateSaleUpdate;
+    if (message) return { type: 404, message };
+
+    const [result] = await salesModel.update(saleId, productId, quantity);
+    if (!result || result.length === 0) return { type: 404, message: 'Sale not found' }; 
+
+    return { type: null, message: result };
+  };
+
+module.exports = { findAll, findById, insert, deleteSale, update };

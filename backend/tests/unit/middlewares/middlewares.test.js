@@ -103,7 +103,7 @@ describe('Testes dos middlewares', function () {
     expect(res.status.calledWith(400)).to.equal(false);
     expect(res.json.calledWith({ message: '"id" must be an integer' })).to.equal(false);
   });
-  it('Testa retorno qd quantity é passado', async function () {
+  it('Testa retorno qd quantity é passado', async function () { // map
       // Arrange (mock)
       const req = { body: reqValidMock };
       const res = {};
@@ -117,8 +117,7 @@ describe('Testes dos middlewares', function () {
       expect(next).to.have.been.calledWith();
   }); 
 
-  it('Testa retorno qd quantity não é passado', async function () {
-      // Arrange (mock)
+  it('Testa retorno qd quantity não é passado', async function () { // map
       const req = { body: missingQuantityMock };
       const res = {};
       let next = {};

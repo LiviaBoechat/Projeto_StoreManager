@@ -36,7 +36,7 @@ const findById = async (id) => {
     return result;
 };
 
- // 1. gerar o id automático da nova sale ao inseri-la na tabela sales
+ // 1. gerar o id automático da nova sale ao inseri-la na tabela sales 
 const insertSale = async () => {
     const query = 'INSERT INTO StoreManager.sales () VALUES ()';
     const [objeto] = await connection.execute(query);
@@ -51,4 +51,42 @@ const insertSale = async () => {
     return result;       
   };
 
-module.exports = { findAll, findById, insertSale, addSalesAndProducts };
+  const deleteSale = async (id) => {
+    await connection.execute('DELETE FROM StoreManager.sales WHERE id = ?', [id]);
+    return true;
+  };
+
+  const findSaleProduct = async (saleId, productId) => {
+    const [result] = await connection.execute(
+      `SELECT
+        s.date,
+        sp.product_id AS productId,
+        sp.quantity,
+        sp.sale_id AS saleId
+      FROM sales_products AS sp
+      INNER JOIN sales AS s
+      ON sp.sale_id = s.id
+      WHERE sp.sale_id = ? AND product_id = ?`,
+      [saleId, productId],
+    );
+    return result;
+  };
+  
+  const update = async (saleId, productId, quantity) => {
+    await connection.execute(
+      'UPDATE sales_products SET quantity = ? WHERE sale_id = ? AND product_id = ?',
+     [quantity, saleId, productId],
+    );
+    
+    // retorno do produto modificado da sale depois do update
+    const [result] = findSaleProduct(saleId, productId);
+    return result;
+  };  
+
+module.exports = { findAll, 
+  findById, 
+  insertSale, 
+  addSalesAndProducts, 
+  deleteSale, 
+  findSaleProduct, 
+  update };

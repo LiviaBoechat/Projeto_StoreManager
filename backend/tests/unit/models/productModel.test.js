@@ -30,6 +30,26 @@ describe('Testes da camada model de Products', function () {
       expect(response).to.be.deep.equal(oneProductMock); // SEM [] pq o mock já é um objeto, ñ precisa desestruturar
   });
 
+  it('Testa se rota get /products/search funciona', async function () {
+    // Arrange (mock)
+   const queryMock = 'Martelo';
+   sinon.stub(connection, 'execute').resolves([[oneProductMock]]); // mocka EXATEMENTE a função connection.execute e SEU retorno
+   // Act
+   const response = await productModel.findByQuery(queryMock);
+   // Assert
+   expect(response).to.be.deep.equal(oneProductMock);
+  });
+
+  it('Testa se rota get /products/search retorna [] se query ñ existir no db', async function () {
+    // Arrange (mock)
+   const queryMock = 'Xablau';
+   sinon.stub(connection, 'execute').resolves([[]]); // mocka EXATEMENTE a função connection.execute e SEU retorno
+   // Act
+   const response = await productModel.findByQuery(queryMock);
+   // Assert
+   expect(response).to.be.deep.equal();
+  });
+
   it('Testa se a rota retorna erro quando parametro incorreto é passado', async function () {
     // Arrange (mock)
     const id = 999;
@@ -74,6 +94,6 @@ describe('Testes da camada model de Products', function () {
    // Act
    const response = await productModel.deleteProduct(id);
    // Assert
-   expect(response).to.be.deep.equal(true); // SEM [] pq o mock já é um objeto, ñ precisa desestruturar
+   expect(response).to.be.deep.equal(true); 
   });
 });

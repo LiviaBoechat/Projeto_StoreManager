@@ -4,6 +4,7 @@ const salesService = require('../../../src/services/salesService');
 const salesModel = require('../../../src/models/salesModel');
 
 const saleProductsValidation = require('../../../src/services/valiadations/saleProductsValidation');
+const validateSaleUpdate = require('../../../src/services/valiadations/validateSaleUpdate');
 
 const { expect } = chai;
 
@@ -54,5 +55,38 @@ describe('Testes da camada service de sales', function () {
         // Assert
         expect(response).to.be.deep
         .equal({ type: null, message: { id: saleIdMock, itemsSold: salesMock } });
+    });
+
+    it('Teste se a rota delete com /sales/:id funciona', async function () {
+        // Arrange (mock)
+        const idMock = 10;
+        sinon.stub(validateSaleUpdate, 'validateSaleUpdate').resolves();
+        sinon.stub(salesModel, 'deleteSale').resolves(true); // sempre retornará true nesse caso específico, ver function
+        // Act
+        const response = await salesService.deleteSale(idMock);
+        // Assert
+        expect(response).to.be.deep.equal({ type: null, message: true });
+    });
+
+    it('Teste se a rota put com /sales... funciona', async function () {
+        // Arrange (mock)
+        const saleIdMock = 10;
+        const productIdMock = 10;
+        const quantityMock = 10;
+        const dateMock = '2023-05-06T03:14:28.000Z1';
+        sinon.stub(validateSaleUpdate, 'validateSaleUpdate').resolves();
+        sinon.stub(salesModel, 'update').resolves(true); 
+        // Act
+        const response = await salesService.update(saleIdMock, productIdMock, quantityMock);
+        // Assert
+        expect(response).to.be.deep.equal({ type: null, 
+            message: 
+            {
+                dateMock,
+                productId: 10,
+                quantity: 10,
+                saleId: 10,
+              },
+        });
     });
 });

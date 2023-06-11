@@ -56,4 +56,19 @@ describe('testando a camada controller da rota /sales', function () {
         expect(res.status).to.have.been.calledWith(201);
         expect(res.json).to.have.been.calledWith(postSaleReturnMock);
     });
+
+    it('Testa se rota delete /sales/:id funciona ', async function () {
+        // Arrange (mock)
+        const req = { params: { id: 1 } };
+        const res = {};
+        res.status = sinon.stub().returns(res);
+        res.json = sinon.stub().returns();
+        sinon.stub(salesService, 'deleteSale')
+          .resolves({ type: null, message: true });
+        // Act
+        await salesController.deleteSale(req, res);
+        // Assert
+        expect(res.status).to.have.been.calledWith(204);
+        expect(res.json).to.have.been.calledWith('');
+    });
 });

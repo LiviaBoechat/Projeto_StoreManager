@@ -5,6 +5,7 @@ const { idValidation,
 
 const productRouter = express.Router();
 
+productRouter.get('/search', productController.findByQuery);
 productRouter.get('/:id', idValidation, productController.findById);  
 productRouter.put('/:id', idValidation, productNameValidation, productController.update);
 productRouter.delete('/:id', idValidation, productController.deleteProduct);  

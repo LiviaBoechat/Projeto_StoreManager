@@ -20,7 +20,7 @@ describe('Testes da camada model de Sales', function () {
       expect(result).to.deep.equal(listAllSalesMock); 
     });
 
-    it('Teste se a rota com /Sales/:id retorna o produto', async function () {
+    it('Teste se a rota com /sales/:id retorna o produto', async function () {
        // Arrange (mock)
       const id = 1;
       sinon.stub(connection, 'execute').resolves([oneSaleMock]); // mocka EXATEMENTE a função connection.execute e SEU retorno
@@ -59,5 +59,15 @@ describe('Testes da camada model de Sales', function () {
     const result = await salesModel.addSalesAndProducts(saleId, productId, quantity);
     // Assert
     expect(result).to.deep.equal(oneSaleMock);
+  });
+
+  it('Testa se a rota delete com /sales/:id funciona', async function () {
+    // Arrange (mock)
+   const idMock = 1;
+   sinon.stub(connection, 'execute').resolves(); // mocka EXATEMENTE a função connection.execute e SEU retorno
+   // Act
+   const response = await salesModel.deleteSale(idMock);
+   // Assert
+   expect(response).to.be.deep.equal(true); // SEM [] pq o mock já é um objeto, ñ precisa desestruturar
   });
 });

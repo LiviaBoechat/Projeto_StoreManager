@@ -40,4 +40,16 @@ const deleteProduct = async (id) => {
     return { type: null, message: result };
 };
 
-module.exports = { findAll, findById, insert, update, deleteProduct };
+const findByQuery = async (query) => {
+    if (!query || query === undefined) {
+        const allProducts = await productModel.findAll();  
+        return { type: null, message: allProducts };
+    }
+
+    const result = await productModel.findByQuery(query); 
+    if (!result) return { type: 200, message: [] };
+
+    return { type: null, message: result };
+};
+
+module.exports = { findAll, findById, insert, update, deleteProduct, findByQuery };
