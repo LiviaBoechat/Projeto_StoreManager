@@ -63,8 +63,8 @@ const insertSale = async () => {
         sp.product_id AS productId,
         sp.quantity,
         sp.sale_id AS saleId
-      FROM sales_products AS sp
-      INNER JOIN sales AS s
+      FROM StoreManager.sales_products AS sp
+      INNER JOIN StoreManager.sales AS s
       ON sp.sale_id = s.id
       WHERE sp.sale_id = ? AND product_id = ?`,
       [saleId, productId],
@@ -74,12 +74,12 @@ const insertSale = async () => {
   
   const update = async (saleId, productId, quantity) => {
     await connection.execute(
-      'UPDATE sales_products SET quantity = ? WHERE sale_id = ? AND product_id = ?',
+      'UPDATE StoreManager.sales_products SET quantity = ? WHERE sale_id = ? AND product_id = ?',
      [quantity, saleId, productId],
     );
     
     // retorno do produto modificado da sale depois do update
-    const [result] = findSaleProduct(saleId, productId);
+    const [result] = await findSaleProduct(saleId, productId);
     return result;
   };  
 

@@ -33,7 +33,7 @@ describe('Testes da camada model de Products', function () {
   it('Testa se rota get /products/search funciona', async function () {
     // Arrange (mock)
    const queryMock = 'Martelo';
-   sinon.stub(connection, 'execute').resolves([[oneProductMock]]); // mocka EXATEMENTE a função connection.execute e SEU retorno
+   sinon.stub(connection, 'execute').resolves([oneProductMock]); // mocka EXATEMENTE a função connection.execute e SEU retorno
    // Act
    const response = await productModel.findByQuery(queryMock);
    // Assert
@@ -43,7 +43,7 @@ describe('Testes da camada model de Products', function () {
   it('Testa se rota get /products/search retorna [] se query ñ existir no db', async function () {
     // Arrange (mock)
    const queryMock = 'Xablau';
-   sinon.stub(connection, 'execute').resolves([[]]); // mocka EXATEMENTE a função connection.execute e SEU retorno
+   sinon.stub(connection, 'execute').resolves([]); // mocka EXATEMENTE a função connection.execute e SEU retorno
    // Act
    const response = await productModel.findByQuery(queryMock);
    // Assert

@@ -3,14 +3,13 @@ const { salesController } = require('../controllers');
 const { validateProductId, 
     validateQuantity, salesInsertValidation } = require('../middlewares/salesReqValidation');
 const { idValidation } = require('../middlewares/insertValidation');
+const { updateProductValidation } = require('../middlewares/updateProductValidation');
 
 const salesRouter = express.Router();
 
 salesRouter.put(
-    '/:saleId/products/:productId/quantity',
-    validateProductId,
-    validateQuantity,
-    salesInsertValidation,
+    '/:saleId/products/:productId/quantity', 
+    updateProductValidation,
     salesController.update,
 );
 salesRouter.get('/:id', salesController.findById); 

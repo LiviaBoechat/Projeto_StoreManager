@@ -74,8 +74,14 @@ describe('Testes da camada service de sales', function () {
         const productIdMock = 10;
         const quantityMock = 10;
         const saleIdMock = 10;
-        sinon.stub(validateSaleUpdate, 'validateSaleUpdate').resolves();
-        sinon.stub(salesModel, 'update').resolves(true); 
+        sinon.stub(salesModel, 'findById').resolves([{ productId: 10,
+        }]);
+        sinon.stub(salesModel, 'update').resolves({
+            date: dateMock,
+            productId: productIdMock,
+            quantity: quantityMock,
+            saleId: saleIdMock,
+          }); 
         // Act
         const response = await salesService.update(saleIdMock, productIdMock, quantityMock);
         // Assert
@@ -95,11 +101,23 @@ describe('Testes da camada service de sales', function () {
         const productIdMock = 10;
         const quantityMock = 10;
         const saleIdMock = 10;
-        sinon.stub(validateSaleUpdate, 'validateSaleUpdate').resolves();
-        sinon.stub(salesModel, 'update').resolves([]); 
+        sinon.stub(salesModel, 'findById').resolves([]);
         // Act
         const response = await salesService.update(saleIdMock, productIdMock, quantityMock);
         // Assert
         expect(response).to.be.deep.equal({ type: 404, message: 'Sale not found' });
+    });
+
+    it('Teste se a rota put com /sales... ñ encontra product no db', async function () {
+        // Arrange (mock)
+        const productIdMock = 10;
+        const quantityMock = 10;
+        const saleIdMock = 10;
+        sinon.stub(salesModel, 'findById').resolves([{ productId: 999,
+        }]);
+        // Act
+        const response = await salesService.update(saleIdMock, productIdMock, quantityMock);
+        // Assert
+        expect(response).to.be.deep.equal({ type: 404, message: 'Product not found in sale' });
     });
 });

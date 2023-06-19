@@ -24,7 +24,7 @@ const update = async (id, name) => {
     const findId = await productModel.findById(id);
     if (!findId) return { type: 404, message: 'error' };
 
-    const result = await productModel.update(id, name); // dependencia externa
+    const result = await productModel.update(id, name);
     // console.log(result);
     if (result === 'Product not found') return { type: 404, message: 'Product not found' };
 

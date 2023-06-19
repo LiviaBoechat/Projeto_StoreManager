@@ -41,11 +41,11 @@ const deleteSale = async (id) => {
 };
 
 const update = async (saleId, productId, quantity) => {
-    const { message } = validateSaleUpdate;
-    if (message) return { type: 404, message };
+    const { type, message } = await validateSaleUpdate(saleId, productId);
+    console.log('service', type, message);
+    if (type) return { type, message };
 
-    const [result] = await salesModel.update(saleId, productId, quantity);
-    if (!result || result.length === 0) return { type: 404, message: 'Sale not found' }; 
+    const result = await salesModel.update(saleId, productId, quantity); 
 
     return { type: null, message: result };
   };
