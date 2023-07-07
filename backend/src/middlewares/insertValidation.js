@@ -4,7 +4,7 @@ const { idSchema, addNameSchema } = require('./schemas');
 function idValidation(req, res, next) {
     const { error } = idSchema.validate(req.params);
     if (error) {
-      return res.status(400).json({ message: error.message });
+      return res.status(400).json({ message: 'Id Inválido' });
     }
     next();
   }
@@ -14,7 +14,7 @@ function productNameValidation(req, res, next) {
     const { error } = addNameSchema.validate(req.body);
     if (error) {
         const newStatus = error.details[0].type === 'any.required' ? 400 : 422;
-      return res.status(newStatus).json({ message: error.message });
+      return res.status(newStatus).json({ message: 'Namegit status Inválido' });
     }
     next();
   }

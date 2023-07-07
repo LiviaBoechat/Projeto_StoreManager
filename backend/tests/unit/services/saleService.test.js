@@ -113,7 +113,9 @@ describe('Testes da camada service de sales', function () {
         const productIdMock = 10;
         const quantityMock = 10;
         const saleIdMock = 10;
-        sinon.stub(salesModel, 'findById').resolves([{ productId: 999,
+        sinon.stub(salesModel, 'findById').resolves([{ saleId: 10,
+        }]);
+        sinon.stub(validateSaleUpdate, 'validateSaleUpdate').resolves([{ saleId: 10, productId: 999,
         }]);
         // Act
         const response = await salesService.update(saleIdMock, productIdMock, quantityMock);

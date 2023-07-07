@@ -18,7 +18,7 @@ const validateQuantity = (req, res, next) => {
         if (!test) return undefined;
         return test.details[0].message;
       });
-      console.log(fails);
+      // console.log(fails);
       const greaterThanFail = fails.includes('"quantity" must be a positive number');
       console.log(greaterThanFail);
       if (greaterThanFail) {
